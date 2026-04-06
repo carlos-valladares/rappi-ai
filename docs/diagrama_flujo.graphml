@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/graphml"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/graphml
+           http://graphml.graphdrawing.org/graphml/1.0/graphml.xsd">
+
+  <key id="label" for="all" attr.name="label" attr.type="string"/>
+  <key id="shape" for="node" attr.name="shape" attr.type="string"/>
+
+  <!-- ══════════════════════════════════════════
+       FLUJO 1: ASISTENTE DE DATOS (Tab 1)
+       ══════════════════════════════════════════ -->
+  <graph id="flujo_asistente" edgedefault="directed">
+
+    <node id="inicio">
+      <data key="label">INICIO</data>
+      <data key="shape">ellipse</data>
+    </node>
+
+    <node id="usuario_input">
+      <data key="label">Usuario escribe pregunta</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="construir_historial">
+      <data key="label">Construir historial de mensajes de sesión</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="llamar_claude">
+      <data key="label">Llamar Claude API (streaming)\nclaude-sonnet-4-5\nmax_tokens=2048</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="hay_tool_call">
+      <data key="label">¿Claude invoca herramienta?</data>
+      <data key="shape">diamond</data>
+    </node>
+
+    <node id="ejecutar_herramienta">
+      <data key="label">Ejecutar herramienta (query_tools.py)\nfilter_zones / compare_metrics /\nget_trend / aggregate_by /\nmultivariable_analysis / get_orders_trend</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="data_loader">
+      <data key="label">Leer DataFrame (data_loader.py)\nlru_cache → data.xlsx</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="devolver_resultado">
+      <data key="label">Devolver resultado JSON a Claude</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="mas_herramientas">
+      <data key="label">¿Claude necesita más herramientas?</data>
+      <data key="shape">diamond</data>
+    </node>
+
+    <node id="texto_streaming">
+      <data key="label">Mostrar texto en streaming\n(progresivo con cursor ▌)</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="guardar_session">
+      <data key="label">Guardar respuesta y resultados\nen session_state\n(historial_herramientas)</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="renderizar_tabla">
+      <data key="label">Renderizar: 1 expander con tablas\n+ botones Exportar CSV / HTML-PDF</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="renderizar_grafico">
+      <data key="label">¿Aplica gráfico?\n→ Líneas (si hay col. semana)\n→ Barras horizontales (resto)</data>
+      <data key="shape">diamond</data>
+    </node>
+
+    <node id="mostrar_grafico">
+      <data key="label">Renderizar 1 gráfico Plotly</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="sugerencias">
+      <data key="label">Mostrar 3 preguntas sugeridas\n(contextuales o aleatorias)</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="fin_chat">
+      <data key="label">FIN (espera nueva pregunta)</data>
+      <data key="shape">ellipse</data>
+    </node>
+
+    <!-- ── FLUJO 2: REPORTE DE INSIGHTS (Tab 2) ── -->
+
+    <node id="inicio_reporte">
+      <data key="label">INICIO REPORTE</data>
+      <data key="shape">ellipse</data>
+    </node>
+
+    <node id="clic_generar">
+      <data key="label">Clic "⚡ Generar Reporte Ejecutivo"</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="analisis_anomalias">
+      <data key="label">detectar_anomalias()\ncambios >10% en cualquier par de semanas\n→ lista ordenada por magnitud (max 400)</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="analisis_tendencias">
+      <data key="label">detectar_tendencias_preocupantes()\ndeterioró en 3+ semanas consecutivas</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="analisis_benchmarks">
+      <data key="label">detectar_brechas_benchmark()\nzonas >20% debajo de peers\ndel mismo país y tipo de zona</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="analisis_correlaciones">
+      <data key="label">calcular_correlaciones()\nPearson entre pares de métricas\n|r|>0.5 y p&lt;0.05</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="analisis_oportunidades">
+      <data key="label">detectar_oportunidades()\nZonas High Priority bajo\nmedia nacional</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="resumir_hallazgos">
+      <data key="label">_resumir_hallazgos()\nTexto compacto para enviar a Claude</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="narrativa_claude">
+      <data key="label">Claude genera narrativa ejecutiva\n(resumen, secciones, recomendaciones)</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="render_jinja">
+      <data key="label">Renderizar report_template.html\ncon Jinja2 + hallazgos + narrativa</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="guardar_html">
+      <data key="label">Guardar HTML en reports/\ncon timestamp en nombre</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="mostrar_reporte">
+      <data key="label">Mostrar vista previa (st.components.html)\n+ botón descarga HTML</data>
+      <data key="shape">rectangle</data>
+    </node>
+
+    <node id="fin_reporte">
+      <data key="label">FIN REPORTE</data>
+      <data key="shape">ellipse</data>
+    </node>
+
+    <!-- ═══════════════════
+         EDGES — TAB 1
+         ═══════════════════ -->
+    <edge id="f1" source="inicio" target="usuario_input"/>
+    <edge id="f2" source="usuario_input" target="construir_historial"/>
+    <edge id="f3" source="construir_historial" target="llamar_claude"/>
+    <edge id="f4" source="llamar_claude" target="hay_tool_call"/>
+
+    <edge id="f5" source="hay_tool_call" target="ejecutar_herramienta">
+      <data key="label">Sí</data>
+    </edge>
+    <edge id="f5b" source="hay_tool_call" target="texto_streaming">
+      <data key="label">No (respuesta final)</data>
+    </edge>
+
+    <edge id="f6" source="ejecutar_herramienta" target="data_loader"/>
+    <edge id="f7" source="data_loader" target="devolver_resultado"/>
+    <edge id="f8" source="devolver_resultado" target="mas_herramientas"/>
+
+    <edge id="f9" source="mas_herramientas" target="llamar_claude">
+      <data key="label">Sí (nueva iteración)</data>
+    </edge>
+    <edge id="f9b" source="mas_herramientas" target="texto_streaming">
+      <data key="label">No (respuesta final)</data>
+    </edge>
+
+    <edge id="f10" source="texto_streaming" target="guardar_session"/>
+    <edge id="f11" source="guardar_session" target="renderizar_tabla"/>
+    <edge id="f12" source="renderizar_tabla" target="renderizar_grafico"/>
+
+    <edge id="f13" source="renderizar_grafico" target="mostrar_grafico">
+      <data key="label">Sí (≥2 filas)</data>
+    </edge>
+    <edge id="f13b" source="renderizar_grafico" target="sugerencias">
+      <data key="label">No</data>
+    </edge>
+
+    <edge id="f14" source="mostrar_grafico" target="sugerencias"/>
+    <edge id="f15" source="sugerencias" target="fin_chat"/>
+
+    <!-- ═══════════════════
+         EDGES — TAB 2
+         ═══════════════════ -->
+    <edge id="r1" source="inicio_reporte" target="clic_generar"/>
+    <edge id="r2" source="clic_generar" target="analisis_anomalias"/>
+    <edge id="r3" source="analisis_anomalias" target="analisis_tendencias"/>
+    <edge id="r4" source="analisis_tendencias" target="analisis_benchmarks"/>
+    <edge id="r5" source="analisis_benchmarks" target="analisis_correlaciones"/>
+    <edge id="r6" source="analisis_correlaciones" target="analisis_oportunidades"/>
+    <edge id="r7" source="analisis_oportunidades" target="resumir_hallazgos"/>
+    <edge id="r8" source="resumir_hallazgos" target="narrativa_claude"/>
+    <edge id="r9" source="narrativa_claude" target="render_jinja"/>
+    <edge id="r10" source="render_jinja" target="guardar_html"/>
+    <edge id="r11" source="guardar_html" target="mostrar_reporte"/>
+    <edge id="r12" source="mostrar_reporte" target="fin_reporte"/>
+
+  </graph>
+</graphml>

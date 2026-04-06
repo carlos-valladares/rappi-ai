@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/graphml"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/graphml
+           http://graphml.graphdrawing.org/graphml/1.0/graphml.xsd">
+
+  <key id="label" for="all" attr.name="label" attr.type="string"/>
+  <key id="description" for="node" attr.name="description" attr.type="string"/>
+
+  <graph id="arquitectura" edgedefault="directed">
+
+    <!-- ── ACTORES ── -->
+    <node id="usuario">
+      <data key="label">Usuario / Analista</data>
+      <data key="description">Equipo de operaciones de Rappi que consulta la app en el navegador</data>
+    </node>
+
+    <!-- ── FRONTEND ── -->
+    <node id="streamlit_app">
+      <data key="label">App Streamlit (app.py)</data>
+      <data key="description">Punto de entrada. Orquesta los dos tabs, estado de sesión y visualizaciones.</data>
+    </node>
+
+    <node id="tab1">
+      <data key="label">Tab 1: Asistente de Datos</data>
+      <data key="description">Chatbot conversacional. Streaming de respuestas, tablas, gráficos y exportación.</data>
+    </node>
+
+    <node id="tab2">
+      <data key="label">Tab 2: Reporte de Insights</data>
+      <data key="description">Genera reporte ejecutivo HTML con análisis automático completo.</data>
+    </node>
+
+    <!-- ── IA ── -->
+    <node id="claude_api">
+      <data key="label">Claude API (claude-sonnet-4-5)</data>
+      <data key="description">Motor de IA. Interpreta preguntas, invoca herramientas y genera narrativa. Anthropic SDK.</data>
+    </node>
+
+    <!-- ── HERRAMIENTAS ── -->
+    <node id="query_tools">
+      <data key="label">Herramientas de Consulta (query_tools.py)</data>
+      <data key="description">6 funciones: filter_zones, compare_metrics, get_trend, aggregate_by, multivariable_analysis, get_orders_trend</data>
+    </node>
+
+    <!-- ── MOTOR DE ANÁLISIS ── -->
+    <node id="insights_engine">
+      <data key="label">Motor de Insights (insights_engine.py)</data>
+      <data key="description">Detecta anomalías, tendencias, benchmarks, correlaciones y oportunidades. Genera narrativa y renderiza HTML.</data>
+    </node>
+
+    <!-- ── DATOS ── -->
+    <node id="data_loader">
+      <data key="label">Cargador de Datos (data_loader.py)</data>
+      <data key="description">Lee Excel con lru_cache. Expone DataFrames de métricas y órdenes.</data>
+    </node>
+
+    <node id="excel">
+      <data key="label">data/data.xlsx</data>
+      <data key="description">Fuente de datos. Hojas: RAW_INPUT_METRICS (L8W_ROLL..L0W_ROLL) y RAW_ORDERS (L8W..L0W). 9 países, 13 métricas.</data>
+    </node>
+
+    <!-- ── SALIDA ── -->
+    <node id="template">
+      <data key="label">Plantilla Jinja2 (report_template.html)</data>
+      <data key="description">Plantilla HTML con filtros interactivos JS y diseño ejecutivo Rappi.</data>
+    </node>
+
+    <node id="reporte_html">
+      <data key="label">Reporte HTML (reports/)</data>
+      <data key="description">Archivo HTML generado con análisis completo, descargable por el usuario.</data>
+    </node>
+
+    <!-- ── SESSION STATE ── -->
+    <node id="session_state">
+      <data key="label">Session State (Streamlit)</data>
+      <data key="description">Almacena historial de mensajes, resultados de herramientas e historial de interacciones.</data>
+    </node>
+
+    <!-- ── EDGES ── -->
+
+    <!-- Usuario ↔ App -->
+    <edge id="e1" source="usuario" target="streamlit_app">
+      <data key="label">Interacción web (browser)</data>
+    </edge>
+
+    <!-- App → Tabs -->
+    <edge id="e2" source="streamlit_app" target="tab1">
+      <data key="label">Renderiza Tab 1</data>
+    </edge>
+    <edge id="e3" source="streamlit_app" target="tab2">
+      <data key="label">Renderiza Tab 2</data>
+    </edge>
+
+    <!-- Tab 1 → Claude (streaming) -->
+    <edge id="e4" source="tab1" target="claude_api">
+      <data key="label">Pregunta + historial (streaming)</data>
+    </edge>
+
+    <!-- Claude → Herramientas (tool use) -->
+    <edge id="e5" source="claude_api" target="query_tools">
+      <data key="label">Invoca herramienta (tool use)</data>
+    </edge>
+
+    <!-- Herramientas → Data Loader -->
+    <edge id="e6" source="query_tools" target="data_loader">
+      <data key="label">Solicita DataFrame</data>
+    </edge>
+
+    <!-- Data Loader → Excel -->
+    <edge id="e7" source="data_loader" target="excel">
+      <data key="label">Lee Excel (con lru_cache)</data>
+    </edge>
+
+    <!-- Data Loader → Herramientas (resultado) -->
+    <edge id="e8" source="data_loader" target="query_tools">
+      <data key="label">Retorna DataFrame</data>
+    </edge>
+
+    <!-- Herramientas → Claude (resultado tool) -->
+    <edge id="e9" source="query_tools" target="claude_api">
+      <data key="label">Resultado de herramienta (JSON)</data>
+    </edge>
+
+    <!-- Claude → Tab 1 (respuesta final) -->
+    <edge id="e10" source="claude_api" target="tab1">
+      <data key="label">Respuesta en streaming</data>
+    </edge>
+
+    <!-- Tab 1 → Session State -->
+    <edge id="e11" source="tab1" target="session_state">
+      <data key="label">Guarda resultados e historial</data>
+    </edge>
+
+    <!-- Tab 2 → Motor de Insights -->
+    <edge id="e12" source="tab2" target="insights_engine">
+      <data key="label">Solicita análisis completo</data>
+    </edge>
+
+    <!-- Motor → Data Loader -->
+    <edge id="e13" source="insights_engine" target="data_loader">
+      <data key="label">Solicita DataFrames</data>
+    </edge>
+
+    <!-- Motor → Claude (narrativa) -->
+    <edge id="e14" source="insights_engine" target="claude_api">
+      <data key="label">Solicita narrativa ejecutiva</data>
+    </edge>
+
+    <!-- Motor → Plantilla -->
+    <edge id="e15" source="insights_engine" target="template">
+      <data key="label">Renderiza con hallazgos (Jinja2)</data>
+    </edge>
+
+    <!-- Plantilla → Reporte HTML -->
+    <edge id="e16" source="template" target="reporte_html">
+      <data key="label">Genera archivo HTML</data>
+    </edge>
+
+    <!-- Reporte → Tab 2 (preview) -->
+    <edge id="e17" source="reporte_html" target="tab2">
+      <data key="label">Vista previa + descarga</data>
+    </edge>
+
+  </graph>
+</graphml>
