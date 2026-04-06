@@ -25,7 +25,7 @@ Aplicación web interactiva que permite consultar métricas operacionales de Rap
 
 ### 1. Clonar el repositorio
 ```bash
-git clone [URL_DEL_REPO]
+git clone https://github.com/carlos-valladares/rappi-ai.git
 cd rappi-ai
 ```
 
